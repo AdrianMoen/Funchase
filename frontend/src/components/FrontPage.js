@@ -10,6 +10,7 @@ import gameServices from "../services/gameServices";
 import userServices from "../services/userServices";
 
 const FrontPage = () => {
+  console.log("FrontPage");
   // const [username, setUsername] = useState(null);
   const [activeOption, setActiveOption] = useState(null); // 'join' or 'create'
   const [gameCode, setGameCode] = useState("");
@@ -28,6 +29,8 @@ const FrontPage = () => {
     const checkLoginStatus = async () => {
       if (!userIsLoggedIn && !loading) {
         // If not logged in, redirect to the login page
+	console.log("Not logged in, loading :", loading, " userIsLoggedIn: ", userIsLoggedIn);
+	console.log("is username anything? : ", username)
         navigate("/login");
       } else if (userIsLoggedIn) {
         if (!username) {

@@ -23,9 +23,9 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls), # not sure where this leads actually
 
-    path('auth/', include(('ServerBackend.urls_auth', 'auth'), namespace='auth')),
-    path('user/', include(('ServerBackend.urls_user', 'user'), namespace='user')),
-    path('game/', include(('ServerBackend.urls_game', 'game'), namespace='game')),
+    path('api/auth/', include(('ServerBackend.urls_auth', 'auth'), namespace='auth')),
+    path('api/user/', include(('ServerBackend.urls_user', 'user'), namespace='user')),
+    path('api/game/', include(('ServerBackend.urls_game', 'game'), namespace='game')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

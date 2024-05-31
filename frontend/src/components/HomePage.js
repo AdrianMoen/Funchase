@@ -1,4 +1,5 @@
 // Import React, useState, useEffect, axios, and useNavigate
+// THIS IS NOT USED????
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Home.css';
@@ -8,6 +9,7 @@ import axios from 'axios';
 import config from '../config';
 
 const HomePage = () => {
+  console.log("HomePage");
   const [message, setMessage] = useState('');
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -18,11 +20,14 @@ const HomePage = () => {
     const fetchData = async () => {
       if (userIsLoggedIn === false) {
         // If not logged in, redirect to the login page
+	console.log("Not logged in, navigating to login page");
         navigate('/login');
       } else if (userIsLoggedIn) {
+	console.log("User is logged in, doing a weird call to backend");
         // If logged in, fetch data or perform any necessary actions
         try {
           const response = await axios.get(`${config.API_BASE_URL}/`);
+	  console.log("message from weird call: ", response.data.message);
           setMessage(response.data.message);
         } catch (error) {
           console.error('There was an error!', error);

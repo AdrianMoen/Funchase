@@ -30,28 +30,31 @@ SECRET_KEY = 'django-insecure-rm85syi-1#o$orog)1*xo78#j5(u4oj6@bq=*nne%8wo9oq9jp
 AUTH_USER_MODEL = 'ServerBackend.User'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Or you can specify the allowed origins
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # The origin of your React app
+    # "http://localhost:3000",  # The origin of your React app
+    "http://88.94.73.21",
 ]
 
 # Dont know what this does, but it fixed every CSRF issues
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
+    # 'http://localhost:3000',
+    "http://88.94.73.21",
 ]
 
 # whitelist for Cors 
 CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000",
+    # "http://localhost:3000",
+    "http://88.94.73.21",
 ]
 
 # celery redis addresses
-CELERY_BROKER_URL = 'redis://localhost:6379/1'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
+CELERY_BROKER_URL = 'redis://redis:6379/1'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/1'
 
 USE_TZ = True
 TIME_ZONE = 'Europe/Oslo'
@@ -64,7 +67,8 @@ SESSION_SAVE_EVERY_REQUEST = False
 
 
 ALLOWED_HOSTS = [
-    "localhost",
+    # "localhost",
+    "88.94.73.21",
 ]
 print(f'allowed hosts {ALLOWED_HOSTS}\n')
 
@@ -199,7 +203,9 @@ CORS_ALLOW_ALL_ORIGINS = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'ServerBackend', 'static')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

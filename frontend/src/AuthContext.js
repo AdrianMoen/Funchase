@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import csrfService from './services/csrfService';
+import config from './config';
+
 
 export const AuthContext = createContext();
 
@@ -10,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     const [inAGame, setInAGame] = useState(false);
     const [loading, setLoading] = useState(true);
     const [csrfToken, setCsrfToken] = useState('');
+    const [jwt, setJwt] = useState('');
 
     useEffect(() => {
 
@@ -24,22 +27,26 @@ export const AuthProvider = ({ children }) => {
       const checkLoginStatus = async () => {
 
         try {
-          const response = await axios.get('http://localhost:8000/auth/get-status/', { withCredentials: true });
+          const response = await axios.get(`${config.API_BASE_URL}/auth/get-status/`, { withCredentials: true });
           
           // 204 response is no content, meaning not logged in
           if (response.status === 204) {
+            console.log("response is 204, not logged in ");
             setUserIsLoggedIn(false);
-            setLoading(false)
+            setLoading(false);
             return;
           }
+          console.log("response is 200, user is logged in ");
           setUserIsLoggedIn(response.data.loggedIn);
           setUsername(response.data.username);
           setInAGame(response.data.inAGame);
-          setLoading(false)
+          setLoading(false);
+	  console.log("username is: ", response.data.username);
+	  console.log("in a game: ", response.data.inAGame);
         } catch (error) {
           console.error("auth: login status check failed:", error);
           setUserIsLoggedIn(false);
-          setLoading(false)
+          setLoading(false);
         }
       };
     
@@ -47,7 +54,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
     
       return (
-        <AuthContext.Provider value={{ loading, username, userIsLoggedIn, inAGame, csrfToken, setLoading, setUserIsLoggedIn, setUsername, setInAGame, setCsrfToken}}>
+        <AuthContext.Provider value={{ loading, username, userIsLoggedIn, inAGame, csrfToken, jwt, setLoading, setUserIsLoggedIn, setUsername, setInAGame, setCsrfToken, setJwt}}>
           {children}
         </AuthContext.Provider>
       );

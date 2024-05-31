@@ -128,7 +128,8 @@ def user_login(request):
         response = JsonResponse({'success': True, 'msg': 'Login successful','JWT': token}, status=200)
 
         logger.info("adding JWT to httpOnly cookie")
-        response.set_cookie('auth_token', token, httponly=True, path='/ws/', samesite='Lax', secure=True)
+        logger.info(f"Token: {token}")
+        response.set_cookie('auth_token', token, httponly=True, path='/ws/', samesite='Lax', secure=False)
         return response
     else: 
         logger.info("login failed")
@@ -183,11 +184,14 @@ def get_status(request): # RENAME!
     @username : string
     @inAGame : boolean
     '''
-    logger.debug("get_login_status")
+    logger.info("TESTING!TESTING!TESTING!TESTING!TESTING!")
 
     user = request.user
 
     if user.is_authenticated:
+
+        logger.info("IS LOGGED IN!")
+    
         
         username = user.username
 
@@ -196,7 +200,7 @@ def get_status(request): # RENAME!
         else:
             in_a_game = False
 
-        logger.debug("user is logged in, returning 200")
+        logger.debug(f"user is logged in, returning 200, username {username}, inAGame {in_a_game}")
         return JsonResponse({'success': True, 'loggedIn': True, 'username': username, 'inAGame': in_a_game}, status=200)
     else:
         logger.debug("not logged in")
@@ -441,8 +445,6 @@ def join_game(request):
         game.num_players += 1
         game.save()
         logger.debug("game found, incrementing num_players")
-    except Game.DoesNotExist as e:
-        logger.warning(f"game not found, error {e}")
     except Game.DoesNotExist as e:
         logger.warning(f"game not found, error {e}")
         return JsonResponse({'success': False, 'msg': 'invalid game code'}, status=404)

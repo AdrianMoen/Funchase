@@ -13,9 +13,10 @@ import { Wheel } from 'react-custom-roulette'
 import SpinSound from '../assets/Sounds/SpinWheel.wav'; // Import your sound file
 import gameServices from "../services/gameServices";
 import PolkadotBackground from './PolkadotBackground';
+import config from '../config';
 
 function GameLobby() {
-    
+    console.log("GameLobby");
     //Used in the leaderboard
     const [playerList, setPlayerList] = useState([]); //list of players in a game
 
@@ -29,7 +30,7 @@ function GameLobby() {
     const [taskPoints, setTaskPoints] = useState(null);
     const [taskId, setTaskId] = useState(null);
     const [totalVotes, setTotalVotes] = useState(0); // New state for total votes
-    const [nextTask, setNextTask] = useState(false)
+    const [nextTask, setNextTask] = useState(false);
     
     //Lists for different types of votes
     const [checkmarksLine1, setCheckmarksLine1] = useState([]);
@@ -229,6 +230,7 @@ function GameLobby() {
 
         // new loaing state makes sure we don't perform actions before the right values are set
         if (!loading && !inAGame) {
+          console.log("Not in a game, navigating to homescreen");
           navigate("/");
         }
 
@@ -242,7 +244,9 @@ function GameLobby() {
         // Setup WebSocket connection
         const wsScheme = window.location.protocol === "https:" ? "wss:" : "ws:";
         console.log("token being sent:", token)
-        webSocketRef.current = new WebSocket(`${wsScheme}//localhost:8000/ws/gamelobby/`);
+        // webSocketRef.current = new WebSocket(`${wsScheme}//localhost:8000/ws/gamelobby/`);
+        webSocketRef.current = new WebSocket(`${wsScheme}${config.WS_BASE_URL}/gamelobby/`);
+
         
         webSocketRef.current.onopen = (event) => {
             console.log('WebSocket Connected');

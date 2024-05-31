@@ -41,6 +41,8 @@ class GameLobby(AsyncWebsocketConsumer):
         # add to a group? or is the group the participant/game
         token = self.scope['cookies'].get('auth_token')
 
+        logger.debug(f'token: {token}')
+
         payload = validate_jwt(token)
 
         if token and payload:
@@ -365,9 +367,15 @@ class GameLobby(AsyncWebsocketConsumer):
         logger.debug("\tWS: get_participant_game")
         try:
             logger.debug("\tWS: querying database")
+            logger.debug(f"\tWS: user_id = {user_id}")
+            exists = Participant.objects.filter(user_id=user_id).exists()
+
+            logger.debug(f"\tWS: Does part exist: {exists}")
+
             part = Participant.objects.get(user_id=user_id)
             logger.debug("\tWS: query complete")
             game = part.game
+            logger.debug(f"\tWS: game = {game.game_id}")
             logger.debug("\tWS: returning game")
             # game_dict = model_to_dict(game)
             # logger.debug("\tWS: admin: ", game.admin)
