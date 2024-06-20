@@ -14,7 +14,7 @@
 frontend/src/.DS_Store
 frontend/node_modules/
 frontend/build/
-frontend/Dockerfile
+#frontend/Dockerfile
 
 # backend ignores
 backend/venv/
@@ -24,12 +24,12 @@ backend/ServerBackend/db.sqlite3
 backend/ServerBackend/django_debug.log
 backend/ServerBackend/.coverage
 backend/ServerBackend/dump.rdb
-backend/ServerBackend/Dockerfile
-backend/ServerBackend/.dockerignore
+#backend/ServerBackend/Dockerfile
+#backend/ServerBackend/.dockerignore
 backend/ServerBackend/ServerVenv
 backend/ServerBackend/ServerBackend/static
 
 # general ignores
 certificates
-nginx-site.conf
-docker-compose.yml
+#nginx-site.conf
+#docker-compose.yml
