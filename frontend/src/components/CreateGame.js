@@ -22,7 +22,7 @@ const useCreateGame = ( mode, trigger, setTrigger) => {
   const navigate = useNavigate();
   const gameTitle = useLocation().state;
   
-  const { inAGame, setInAGame} = useContext(AuthContext); //removed inAGame, setInAGame, does not work...
+  const { inAGame, setInAGame, csrfToken} = useContext(AuthContext); //removed inAGame, setInAGame, does not work...
 
   const generateGameId = useCallback(() => {
     // Generate a random alphanumeric string of length 6
@@ -37,9 +37,10 @@ const useCreateGame = ( mode, trigger, setTrigger) => {
     const gameId = generateGameId();
     const cookies = new Cookies();
     const token = cookies.get("csrftoken");
+    console.log("create game, sending token: ", token);
   
     try {
-      const response = await gameServices.createGame(gameId, id, "desc1", gameTitle, token)
+      const response = await gameServices.createGame(gameId, id, "desc1", gameTitle, csrfToken)
   
       if (response.data['success'] !== false) {
         // Success

@@ -38,18 +38,24 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     # "http://localhost:3000",  # The origin of your React app
     "http://88.94.73.21",
+    "https://funchase.xyz",
+    "https://www.funchase.xyz",
 ]
 
 # Dont know what this does, but it fixed every CSRF issues
 CSRF_TRUSTED_ORIGINS = [
     # 'http://localhost:3000',
     "http://88.94.73.21",
+    "https://funchase.xyz",
+    "https://www.funchase.xyz",
 ]
 
 # whitelist for Cors 
 CORS_ORIGIN_WHITELIST = [
     # "http://localhost:3000",
     "http://88.94.73.21",
+    "https://funchase.xyz",
+    "https://www.funchase.xyz",
 ]
 
 # celery redis addresses
@@ -59,16 +65,20 @@ CELERY_RESULT_BACKEND = 'redis://redis:6379/1'
 USE_TZ = True
 TIME_ZONE = 'Europe/Oslo'
 
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_AGE = 7200
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SAVE_EVERY_REQUEST = False
 
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = [
     # "localhost",
     "88.94.73.21",
+    "funchase.xyz",
+    "www.funchase.xyz",
 ]
 print(f'allowed hosts {ALLOWED_HOSTS}\n')
 
@@ -80,7 +90,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',   
+    'django.contrib.staticfiles',
     'corsheaders',
     'channels',
     'ServerBackend.apps.ServerBackendConfig',

@@ -1,0 +1,3 @@
+Where we are now:
+Build and up 'works' but django is not recognized via gunicorn, for some reason, must be fixed
+Might have something with celery to do, maybe pythonpath, not entirely sure

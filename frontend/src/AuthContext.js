@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
       const initializeAuth = async () => {
         setLoading(true);
         const token = await csrfService.getCsrfToken();
+	console.log("csrftoken: ", token);
         setCsrfToken(token);
         checkLoginStatus();
       }
@@ -51,7 +52,7 @@ export const AuthProvider = ({ children }) => {
       };
     
       initializeAuth();
-    }, []);
+    }, [userIsLoggedIn]);
     
       return (
         <AuthContext.Provider value={{ loading, username, userIsLoggedIn, inAGame, csrfToken, jwt, setLoading, setUserIsLoggedIn, setUsername, setInAGame, setCsrfToken, setJwt}}>

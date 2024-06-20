@@ -1,5 +1,5 @@
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://88.94.73.21/api';
-const WS_BASE_URL = process.env.WS_BASE_URL || '//88.94.73.21/ws';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://funchase.xyz/api';
+const WS_BASE_URL = process.env.WS_BASE_URL || '//funchase.xyz/ws';
 // Get the api base url, and defailt to localhost:8000 if not present
 
 // Export the constant

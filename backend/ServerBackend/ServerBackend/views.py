@@ -129,7 +129,7 @@ def user_login(request):
 
         logger.info("adding JWT to httpOnly cookie")
         logger.info(f"Token: {token}")
-        response.set_cookie('auth_token', token, httponly=True, path='/ws/', samesite='Lax', secure=False)
+        response.set_cookie('auth_token', token, httponly=True, path='/ws/', samesite='Lax', secure=True)
         return response
     else: 
         logger.info("login failed")

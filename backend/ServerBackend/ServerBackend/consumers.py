@@ -176,8 +176,13 @@ class GameLobby(AsyncWebsocketConsumer):
 
                 response = {}
 
+                logger.debug(f'participants: {participants}')
+                logger.debug(f'yes votes: {yesVotes}')
+                logger.debug(f'no votes: {noVotes}')
+                logger.debug(f'skip votes: {skipVotes}')
+
                 # Check if the overwhelming majority has voted, and end game if one-sided.
-                if ((participants - 1)/2 - skipVotes) < yesVotes or (yesVotes == noVotes) & yesVotes != 0:  
+                if ((participants - 1)/2 - skipVotes) < yesVotes or ((yesVotes == noVotes) and yesVotes == ((participants - 1)/2-skipVotes)) and yesVotes != 0:
                     # Removes responses for specific task, in specific game.
                     await self.next_task_preperation(game, task, True)                                # Player wins
                     # Gives player points.
@@ -186,7 +191,7 @@ class GameLobby(AsyncWebsocketConsumer):
 
 
 
-                elif ((participants - 1)/2 - skipVotes) < noVotes:                            
+                elif ((participants - 1)/2 - skipVotes) < noVotes and noVotes != 0:
                     # Removes responses for specific task, in specific game.                    # Player loses
                     await self.next_task_preperation(game, task, False)
                     response = {'winner': False}
@@ -436,8 +441,16 @@ class GameLobby(AsyncWebsocketConsumer):
 
             gameWinner = None
             for participant in participants:
-                participantHist = ParticipantHistory(user=participant.user, game_id=participant.game.game_id, score=participant.score)
+                exists = ParticipantHistory.objects.filter(user=participant.user, game_id=participant.game.game_id).exists()
+                if exists:
+                    participantHist = ParticipantHistory.objects.get(user=participant.user, game_id=participant.game.game_id)
+                    participantHist.score = participant.score
+                else:
+                    participantHist = ParticipantHistory(user=participant.user, game_id=participant.game.game_id, score=participant.score)
+
                 participantHist.save()
+
+
                 if gameWinner is None or participant.score > gameWinner.score:
                     gameWinner = participant
 

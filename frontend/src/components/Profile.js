@@ -21,7 +21,7 @@ const Profile = () => {
   // State to control the current view in the right container
   const [currentView, setCurrentView] = useState("editProfile");
 
-  const { userIsLoggedIn, loading} = useContext(AuthContext);
+  const { userIsLoggedIn, loading, csrfToken} = useContext(AuthContext);
 
   // State for storing user data
   const [userData, setUserData] = useState({
@@ -154,7 +154,7 @@ const Profile = () => {
     const token = cookies.get("csrftoken");
 
     try {
-      const response = await userServices.updateProfile(field, updatedValue, token);
+      const response = await userServices.updateProfile(field, updatedValue, csrfToken);
 
       // If the backend response is successful, update the userData state
       if (response.status === 200) {
@@ -186,7 +186,7 @@ const Profile = () => {
 
   const handleSelectProfilePic = async (imagePath) => {
     try {
-        const response = await userServices.updatePicture(imagePath, token);
+        const response = await userServices.updatePicture(imagePath, csrfToken);
         if (response.data.success) {
             setProfilePic(imagePath);
         } else {
@@ -201,7 +201,7 @@ const Profile = () => {
   const handleDeleteImage = async (imagePath) => {
     try {
         // Assume imagePath contains the necessary identifier for deletion
-        const response = await userServices.deletePicture(imagePath, token);
+        const response = await userServices.deletePicture(imagePath, csrfToken);
 
         if (response.data.success) {
             // Remove the image from the gallery state
@@ -228,10 +228,10 @@ const Profile = () => {
 
       try {
         // Send POST request to the server to upload the profile image
-        const response = await userServices.uploadPicture(formData, token);
+        const response = await userServices.uploadPicture(formData, csrfToken);
 
         try {
-          const response = await userServices.getAllPictures(token);
+          const response = await userServices.getAllPictures(csrfToken);
           
           if (response.data.success) {
             setGallery(response.data.files);
@@ -262,7 +262,7 @@ const Profile = () => {
     }
 
     try {
-      const response = await userServices.getAllPictures(token);
+      const response = await userServices.getAllPictures(csrfToken);
       if (response.data.success) {
         setGallery(response.data.files);
         setShowGallery(true);
@@ -319,7 +319,7 @@ const Profile = () => {
       setShowChangePassword(false);
 
 
-      const response = await userServices.getGameDetails(gameID, token);
+      const response = await userServices.getGameDetails(gameID, csrfToken);
 
       
       if (response.data.success) {

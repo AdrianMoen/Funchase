@@ -21,7 +21,7 @@ const FrontPage = () => {
   const navigate = useNavigate(); // Initialize useHistory hook
 
   // const userIsLoggedIn = useCheckUserLoggedIn();
-  const { username, setUsername, userIsLoggedIn, inAGame, setInAGame, loading } = useContext(AuthContext); //removed inAGame, setInAGame, does not work...
+  const { username, setUsername, userIsLoggedIn, inAGame, setInAGame, loading, csrfToken } = useContext(AuthContext); //removed inAGame, setInAGame, does not work...
 
   useEffect(() => {
     const cookies = new Cookies();
@@ -92,7 +92,7 @@ const FrontPage = () => {
     // }
 
     try {
-      const response = await gameServices.joinGame(gameCode, token);
+      const response = await gameServices.joinGame(gameCode, csrfToken);
       setInAGame(true);
       navigate("/game-lobby"); // Navigate to the route where GameLobby component is rendered
     } catch (error) {

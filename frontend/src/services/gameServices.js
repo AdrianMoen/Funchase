@@ -3,6 +3,7 @@ import config from '../config';
 
 
 const createGame = async (gameId, id, description, gameTitle, token) => {
+  console.log("using token ", token);
   return axios.post(
     `${config.API_BASE_URL}/game/create/`,
     { gameid: gameId, id: id, description: description, title: gameTitle },
