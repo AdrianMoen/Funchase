@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 import sys
+import logging
+
+logger = logging.getLogger(__name__)
 # from ServerBackend.management.commands import populate_tasks
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -166,14 +169,29 @@ DATABASES = {
 #         'BACKEND': 'channels.layers.InMemoryChannelLayer',
 #     },
 # }
+# BRUK DEN HER!
+#CHANNEL_LAYERS = {
+#    'default': {
+#        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#        'config': {
+#            'hosts': [('redis', 6379)]
+#        }
+#    },
+#}
+
+
+## TEMP TEST
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'config': {
-            'hosts': [('127.0.0.1', 6379)]
-        }
+        'CONFIG': {
+            'hosts': [('redis', 6379)],  # Change to test
+            'capacity': 10000,  # Add an option to see if it has any impact
+            'expiry': 60,
+        },
     },
 }
+
 
 
 # Password validation
@@ -267,3 +285,5 @@ LOGGING = {
         },
     },
 }
+
+logger.debug(f"CHANNEL_LAYERS = {CHANNEL_LAYERS}")

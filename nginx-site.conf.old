@@ -10,7 +10,7 @@ server {
     listen 443 ssl;
     server_name funchase.xyz www.funchase.xyz;
 
-    ssl_certificate /etc/nginx/ssl/fullchain.pem;
+    ssl_certificate /etc/nginx/ssl/fullchain.pem; # I have copied these 4 files to the ./certificates folder, should i change these paths to the .certificates file?
     ssl_certificate_key /etc/nginx/ssl/privkey.pem; 
     include /etc/nginx/ssl/options-ssl-nginx.conf;
     ssl_dhparam /etc/nginx/ssl/ssl-dhparams.pem;
@@ -18,14 +18,12 @@ server {
     client_max_body_size 10M;
 
     location / {
-        root /usr/share/nginx/html; 
+        root /usr/share/nginx/html; # this is the path to the build directory for react, the path you suggested, /usr/share/nginx/html, doesn't exist, what should be in here?
         try_files $uri /index.html;
     }
 
     location /static/ {
-        #alias /usr/share/nginx/html/static/;
-	root /usr/share/nginx/html/;
-	try_files $uri /index.html =404;
+        alias /usr/share/nginx/html/static/; # Same problem here, you suggested the path in the comment above, i don't understand what i should do
     }
 
     location /api/ {
@@ -37,7 +35,7 @@ server {
     }
 
     location /ws/ {
-        proxy_pass http://daphne:8001;
+        proxy_pass http://django:8000; # i am not sure if the django application has opened port 8000, i believe earlier i have operated on 8000 for both the api and the websocket, should i not be able to pu 8000 here? please tell me what i should do
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
@@ -48,10 +46,10 @@ server {
     }
 
     location /django_static/ {
-        alias /usr/share/nginx/html/django_static/;
+        alias /usr/share/nginx/html/django_static/; # same here as with the earlier static files, this is where the static files have been located earier, we are currently not serving any static files through django i believe
     }
 
     location /media/ {
-        alias /usr/share/nginx/html/media/;
+        alias /usr/share/nginx/html/media/; # Media is a path that we use in django to store media files, should i really move this. If so i believe i have to change some settings in djangos settings.py 
     }
 }
