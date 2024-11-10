@@ -1,5 +1,6 @@
 # Recursive ignores
 **.vscode
+**.env
 **.pyc
 **.DS_Store
 **node_modules

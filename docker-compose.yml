@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+
+  db:
+    image: mysql:latest
+    container_name: funchase_mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
   django:
     build:
       context: ./backend/ServerBackend
@@ -8,16 +23,16 @@ services:
       - ./backend/ServerBackend:/app
     ports:
       - "8000:8000"
-    env_file: #not used?
-        - ./backend/ServerBackend/.env
+    depends_on:
+      - db
+    env_file:
+      - ./backend/ServerBackend/.env
 
   react:
     build:
       context: ./frontend
     volumes:
       - ./frontend/build:/usr/share/nginx/html
-        #ports: NO NEED TO BIND HERE
-        #- "80:80" #80:80 or 3000:80 or 3000:3000 ??
 
   nginx:
     image: nginx:latest
@@ -26,7 +41,6 @@ services:
       - ./nginx-site.conf:/etc/nginx/conf.d/nginx-site.conf
       - ./certificates:/etc/nginx/ssl
       - ./frontend/build:/usr/share/nginx/html
-      #- ./backend/ServerBackend/ServerBackend/static:/usr/share/nginx/html/static
       - ./backend/ServerBackend/ServerBackend/media:/usr/share/nginx/html/media
     ports:
       - "80:80"
@@ -46,6 +60,9 @@ services:
       - redis
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
+    env_file:
+      - ./backend/ServerBackend/.env
+
 
   redis:
     image: redis:latest
@@ -54,12 +71,18 @@ services:
 
   daphne:
     build:
-      context: ./backend/ServerBackend  # Ensure it builds correctly for your backend
+      context: ./backend/ServerBackend
     command: daphne -b 0.0.0.0 -p 8001 ServerBackend.asgi:application
     depends_on:
       - django
+      - db
     ports:
       - "8001:8001"
     environment:
       - DJANGO_SETTINGS_MODULE=ServerBackend.settings
+    env_file:
+      - ./backend/ServerBackend/.env
 
+
+volumes:
+  mysql_data:

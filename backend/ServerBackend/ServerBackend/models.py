@@ -95,7 +95,7 @@ Define tasks or challenges that participants need to complete during the game.
 '''
 class Tasks(models.Model):
 
-    task_id = models.IntegerField(primary_key=True, default=None)
+    task_id = models.AutoField(primary_key=True)
 
     # Description of the task/challenge
     description = models.TextField()

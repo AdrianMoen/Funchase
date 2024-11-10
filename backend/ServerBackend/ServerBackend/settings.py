@@ -140,13 +140,27 @@ ASGI_APPLICATION = 'ServerBackend.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'TEST': {
+#             'NAME': BASE_DIR / 'test_db.sqlite3',
+#         },
+#     }
+# }
+
+if not os.getenv("MYSQL_DATABASE"):
+    raise ValueError("MYSQL_DATABASE not found in .env file")
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        'TEST': {
-            'NAME': BASE_DIR / 'test_db.sqlite3',
-        },
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv("MYSQL_DATABASE"),
+        'USER': os.getenv('MYSQL_USER'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),  # 'db' refers to the service name in docker-compose
+        'PORT': os.getenv('DATABASE_PORT'),
     }
 }
 
